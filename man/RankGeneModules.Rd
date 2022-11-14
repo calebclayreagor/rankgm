@@ -2,7 +2,7 @@
 % Please edit documentation in R/rankgm.R
 \name{RankGeneModules}
 \alias{RankGeneModules}
-\title{Ranking gene-expression modules}
+\title{Rank gene-expression modules}
 \usage{
 RankGeneModules(
   object,
