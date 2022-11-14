@@ -1,4 +1,4 @@
-#' Ranking gene-expression modules
+#' Rank gene-expression modules
 #'
 #' @description
 #' Infers gene expression-module rankings by fitting negative binomial mixture models to gene-count data in single cells.
@@ -79,7 +79,7 @@ RankGeneModules <- function(object, chunk.size = 500, verbose = TRUE, parallel =
 
     # load data chunk of specified size and convert to sparse counts matrix
     chunk.data <- object[["matrix"]][(chunk.indices[i]+1):chunk.indices[i+1],]
-    n.cells <- chunk.data$dims[1]
+    n.cells <- dim(chunk.data)[1]
     counts.dgCMat <- Matrix::t(as(chunk.data, 'dgCMatrix'))
 
     # check that all non-zero elements in chunk.data are positive integers
