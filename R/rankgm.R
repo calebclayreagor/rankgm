@@ -64,7 +64,7 @@ RankGeneModules <- function(object, chunk.size = 500, verbose = TRUE, parallel =
 
   # create dataset 'rankgm_success' in group 'col_attrs': model fitting success (0/1)
   if ("rankgm_success" %in% names(col_attrs)) col_attrs$link_delete("rankgm_success")
-  sp_rankgm_success <- hdf5r::H5S$new(dims = c(dims[1], 1), maxdims=c(Inf, 1))
+  sp_rankgm_success <- hdf5r::H5S$new(dims = dims[1], maxdims = Inf)
   col_attrs$create_dataset(name = "rankgm_success", space = sp_rankgm_success,
                            dtype = hdf5r::h5types$H5T_NATIVE_INT32)
 
@@ -113,7 +113,7 @@ RankGeneModules <- function(object, chunk.size = 500, verbose = TRUE, parallel =
     chunk.ranks[cbind((ranks.dgTMat@i+1),(ranks.dgTMat@j+1))] <- ranks.dgTMat@x
 
     # set binary success indicator column attribute ('rankgm_success') for cells in chunk
-    col_attrs[["rankgm_success"]][(chunk.indices[i]+1):chunk.indices[i+1],] <- fits.success
+    col_attrs[["rankgm_success"]][(chunk.indices[i]+1):chunk.indices[i+1]] <- fits.success
 
     if (verbose) {
       message(paste("Finished batch", i, "of", n.iter, "- successful fits for", success.n, "of", n.cells, "cells"))
