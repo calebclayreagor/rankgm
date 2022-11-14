@@ -111,7 +111,7 @@ RankGeneModules <- function(object, chunk.size = 500, verbose = TRUE, parallel =
     ranks.dgTMat <- Matrix::t(as(Matrix::drop0(ranks.dgCMat), 'TsparseMatrix'))
     #chunk.ranks <- layers[["rankgm"]][(chunk.indices[i]+1):chunk.indices[i+1],]
     #chunk.ranks[cbind((ranks.dgTMat@i+1),(ranks.dgTMat@j+1))] <- ranks.dgTMat@x
-    layers[["rankgm"]][(chunk.indices[i]+1):chunk.indices[i+1],][cbind((ranks.dgTMat@i+1),(ranks.dgTMat@j+1))] <- ranks.dgTMat@x
+    layers[["rankgm"]][cbind((chunk.indices[i]+ranks.dgTMat@i+2),(ranks.dgTMat@j+1))] <- ranks.dgTMat@x
 
     # set binary success indicator column attribute ('rankgm_success') for cells in chunk
     col_attrs[["rankgm_success"]][(chunk.indices[i]+1):chunk.indices[i+1]] <- fits.success
