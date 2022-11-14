@@ -60,13 +60,13 @@ RankGeneModules <- function(object, chunk.size = 500, verbose = TRUE, parallel =
   if ("rankgm" %in% names(layers)) layers$link_delete("rankgm")
   sp_rankgm <- hdf5r::H5S$new(dims = dims, maxdims = c(Inf, dims[2]))
   layers$create_dataset(name = "rankgm", space = sp_rankgm,
-                        dtype = hdf5r::h5types$H5T_NATIVE_INT32)
+                        dtype = hdf5r::h5types$H5T_NATIVE_INT)
 
   # create dataset 'rankgm_success' in group 'col_attrs': model fitting success (0/1)
   if ("rankgm_success" %in% names(col_attrs)) col_attrs$link_delete("rankgm_success")
   sp_rankgm_success <- hdf5r::H5S$new(dims = dims[1], maxdims = Inf)
   col_attrs$create_dataset(name = "rankgm_success", space = sp_rankgm_success,
-                           dtype = hdf5r::h5types$H5T_NATIVE_INT32)
+                           dtype = hdf5r::h5types$H5T_NATIVE_INT)
 
   # row (cell) index boundaries for chunking, used like (lower, upper]
   chunk.indices <- c(seq(from = 0, to = dims[1], by = chunk.size), dims[1])
