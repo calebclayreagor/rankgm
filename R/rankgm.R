@@ -116,11 +116,10 @@ RankGeneModules <- function(object, chunk.size = 500, verbose = TRUE, parallel =
     col_attrs[["rankgm_success"]][(chunk.indices[i]+1):chunk.indices[i+1]] <- as.integer(fits.success)
 
     if (verbose) {
-      message(paste("Finished batch", i, "of", n.iter, "- successful fits for", success.n, "of", n.cells, "cells"))
-    }
+      message(paste("Finished batch", i, "of", n.iter, "- successful fits for", success.n, "of", n.cells, "cells"))}
   }
 
-  if (verbose) message(paste("Done. Successful fits for", success.total, "of", dims[1], "total cells."))
+  if (verbose) message(paste("Done. Successful fits for", success.total, "of", dims[1], "cells."))
 
   # return H5File
   return(object)}
@@ -219,8 +218,9 @@ inferRanks <- function(y.nz, n.genes.total, thresh.p = 0.05, max.n = 10, seed = 
       y.rank <- dnbmix(f2$par, y, FALSE, FALSE) # equal priors
       y.rank <- apply(y.rank, 2, which.max)
       b <- matrixStats::binCounts(y.rank, bx=seq(max(y.rank)+1)) }
-    if ((p.val>thresh.p)|(sum(b>0)<i)) break
-    else if (i>2) f1 <- f2 }
+    if ((p.val>thresh.p)|(sum(b>0)<i)) { break
+    } else if (i>2) { f1 <- f2 }
+  }
 
   # rank-order genes by assigning them to their most likely gene-expression modules
   y.rank <- dnbmix(f1$par, y, FALSE, FALSE) # equal priors
@@ -268,11 +268,6 @@ dnbmix <- function(theta, y, dsum = TRUE, weights = TRUE) {
   # select the parameters for dist_i (w_i, n_i, p_i)
   for (i in seq(n.mix)) {
 
-    ## parameters if only one distribution in the mixture
-    #if (n.mix == 1) {
-    #  w_i <- 1.; n_i <- (10^theta[1])
-    #  p_i <- theta[2]
-
     # parameters for distributions i=1 to k-1
     if (i < n.mix) {
       w_i <- theta[((i-1)*3)+1]
@@ -289,7 +284,7 @@ dnbmix <- function(theta, y, dsum = TRUE, weights = TRUE) {
     # find the (possibly weighted) probability densities
     dmix[i,] <- stats::dnbinom(y, n_i, p_i)
     if (weights == TRUE) dmix[i,] <- w_i * dmix[i,]
-    }
+  }
 
   # sum across distributions, if specified
   if (dsum == TRUE) dmix <- colSums(dmix)
