@@ -228,8 +228,7 @@ inferRanks <- function(y.nz, n.genes.total, thresh.p = 0.05, max.n = 10, seed = 
 
   # model fitting is successful if optimization converges and >=1 gene in each module
   b <- matrixStats::binCounts(y.rank, bx=seq(max(y.rank)+1))
-  #fit.success <- as.numeric(f1$convergence == 0) * as.numeric(sum(b>0) == length(b))
-  fit.success <- (sum(b>0) == length(b))
+  fit.success <- as.numeric(f1$convergence == 0) * as.numeric(sum(b>0) == length(b))
 
   # gene rankings, for non-zero counts only
   if (fit.success) {
