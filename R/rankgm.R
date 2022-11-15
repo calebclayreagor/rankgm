@@ -105,14 +105,14 @@ RankGeneModules <- function(object, chunk.size = 500, verbose = TRUE, parallel =
     success.n <- sum(fits.success)
     success.total <- success.total + success.n
 
-    # convert back to sparse matrix (C->T), then set the gene ranks for cells in chunk
+    # convert back to matrix (sparse -> dense), then set gene ranks for cells in chunk
     ranks.dgCMat <- Matrix::sparseMatrix(i = (counts.dgCMat@i+1), p = counts.dgCMat@p,
                                          x = ranks, dims = counts.dgCMat@Dim)
     ranks.Mat <- Matrix::t(as(Matrix::drop0(ranks.dgCMat), 'Matrix'))
     #ranks.dgTMat <- Matrix::t(as(Matrix::drop0(ranks.dgCMat), 'TsparseMatrix'))
     #chunk.ranks <- layers[["rankgm"]][(chunk.indices[i]+1):chunk.indices[i+1],]
     #chunk.ranks[cbind((ranks.dgTMat@i+1),(ranks.dgTMat@j+1))] <- ranks.dgTMat@x
-    layers[["rankgm"]][(chunk.indices[i]+1):chunk.indices[i+1],] <- as.integer(ranks.Mat)
+    layers[["rankgm"]][(chunk.indices[i]+1):chunk.indices[i+1],] <- as(ranks.Mat, "integer")
 
     # set binary success indicator column attribute ('rankgm_success') for cells in chunk
     col_attrs[["rankgm_success"]][(chunk.indices[i]+1):chunk.indices[i+1]] <- as.integer(fits.success)
