@@ -30,7 +30,7 @@ RankGeneModules <- function(object, chunk.size = 500, verbose = TRUE, parallel =
   # TO-DO:
   #   -checks for chunk.size, verbose, parallel, overwrite, BPPARAM
 
-  # 'object' checks: H5File-class with r+ access, contains required groups/datasets, overwrite (y/n)
+  # check 'object': H5File-class with r+ access, contains required groups/datasets, overwrite (y/n)
   if (class(object)[1] != 'H5File') {
     stop("Object must be an H5File-class object. See package hdf5r for more details.")}
   if (object$mode != 'r+') {
@@ -110,9 +110,6 @@ RankGeneModules <- function(object, chunk.size = 500, verbose = TRUE, parallel =
     ranks.dgCMat <- Matrix::sparseMatrix(i = (counts.dgCMat@i+1), p = counts.dgCMat@p,
                                          x = ranks, dims = counts.dgCMat@Dim)
     ranks.Mat <- Matrix::t(as(Matrix::drop0(ranks.dgCMat), 'Matrix'))
-    #ranks.dgTMat <- Matrix::t(as(Matrix::drop0(ranks.dgCMat), 'TsparseMatrix'))
-    #chunk.ranks <- layers[["rankgm"]][(chunk.indices[i]+1):chunk.indices[i+1],]
-    #chunk.ranks[cbind((ranks.dgTMat@i+1),(ranks.dgTMat@j+1))] <- ranks.dgTMat@x
     layers[["rankgm"]][(chunk.indices[i]+1):chunk.indices[i+1],] <- as(ranks.Mat, "integer")
 
     # set binary success indicator column attribute ('rankgm_success') for cells in chunk
